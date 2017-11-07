@@ -42,7 +42,11 @@ bool hasNext(struct Node* node){
 }
 
 void printNode(struct Node* node){
-  printf("%s\n", node->data);
+  if(node == NULL) {
+    printf("NULL\n");
+  } else{
+    printf("%s\n", node->data);    
+  }
 }
 
 void insertAtHead(char* info){
@@ -189,6 +193,43 @@ void deleteAtIndex(int index){
   }
 }
 
+
+//return the first node with data equals to info
+struct Node* findNodeWith(char * info){
+  if(isEmpty()){
+    return NULL;
+  }else{
+    struct Node* temp = head;
+    while(notNull(temp)){
+      if(temp->data == info){
+        return temp;
+      }
+      temp = temp -> next;
+    }
+    return NULL;
+  }
+}
+
+struct Node* findAtIndex(int index) {
+  if(index <= getListSize() && index>=0){
+    if(isEmpty()){
+      return NULL;
+    }else{
+      int iterator = 0;
+      struct Node* temp = head;
+      while(notNull(temp)) {
+        if (iterator == index) {
+          return temp;
+        }else{
+          iterator++;
+          temp = temp -> next;
+        }
+      }
+    }
+  }
+  return NULL;
+}
+
 void printList(){
   if(isEmpty()){
     printf("Empty");
@@ -239,5 +280,15 @@ int main(void){
   printf("\nDelete index 4\n");
   deleteAtIndex(4);
   printList();
+
+  printf("Buscando Luis..\n");
+  printNode(findNodeWith("Luis"));
+
+  printf("Buscando Juan..\n");
+  printNode(findNodeWith("Juan"));
+
+  printf("Buscando index 3\n");
+  printNode(findAtIndex(3));
+
 
 }

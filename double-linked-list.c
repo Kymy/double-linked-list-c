@@ -14,8 +14,6 @@ struct Node {
   struct Node* prev;
 };
 
-struct Node* head;
-
 //Create a new node
 struct Node* createNode(char* info){
   struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
@@ -25,12 +23,8 @@ struct Node* createNode(char* info){
   return newNode;
 }
 
-bool isEmpty(){
+bool isEmpty(struct Node* head){
   return head == NULL;
-}
-
-void initializeList(){
-  head = NULL;
 }
 
 bool notNull(struct Node* node){
@@ -49,39 +43,38 @@ void printNode(struct Node* node){
   }
 }
 
-void insertAtHead(char* info){
+struct Node* insertAtHead(struct Node* list, char* info){
   struct Node* newNode = createNode(info);
-  if(isEmpty()){
-    head = newNode;
-    return;
+  if(isEmpty(list)){
+    return newNode;
   }else{
-    newNode->next = head;
-    head->prev = newNode;
-    head = newNode;
+    newNode->next = list;
+    list->prev = newNode;
   }
+  return newNode;
 }
 
-void insertAtTail(char* info){
+struct Node* insertAtTail(struct Node* list, char* info){
   struct Node* newNode = createNode(info);
-  if(isEmpty()){
-    head = newNode;
-    return;
+  if(isEmpty(list)){
+    return newNode;
   }else{
-   struct Node* temp = head;
+   struct Node* temp = list;
    while(hasNext(temp)){
     temp = temp->next;
    }
    temp->next = newNode;
    newNode->prev = temp;
   }
+  return list;
 }
 
-struct Node* getHead(){
+struct Node* getHead(struct Node* head){
   return head;
 }
 
-struct Node* getTail() {
-  if(isEmpty()){
+struct Node* getTail(struct Node* head) {
+  if(isEmpty(head)){
     return NULL;
   }else{
     struct Node* temp = head;
@@ -92,30 +85,33 @@ struct Node* getTail() {
   }
 }
 
-void deleteHead(){
-  if(isEmpty()){
-    return;
+struct Node* deleteHead(struct Node* list){
+  if(isEmpty(list)){
+    return NULL;
   }else{
-    head = head->next;
-    free(head->prev);
+    list = list->next;
+    free(list->prev);
   }
+  return list;
 }
 
-void deleteTail(){
-  if(isEmpty()){
-    return;
+struct Node* deleteTail(struct Node* list){
+  if(isEmpty(list)){
+    return NULL;
   }else{
-    struct Node* temp = head;
+    struct Node* temp = list;
     while(hasNext(temp)){
       temp = temp -> next;
     }
     temp->prev->next = NULL;
+    free(temp->prev->next);
+    return list;
   }
 }
 
-int getListSize(){
+int getListSize(struct Node* head){
   int size = 0;
-  if(isEmpty()){
+  if(isEmpty(head)){
     return size;
   }else{
     struct Node* temp =  head;
@@ -131,24 +127,22 @@ char* getValue(struct Node* node){
   return node->data;
 }
 
-bool isTheLastOne(iterator){
-  return iterator == getListSize();
+bool isTheLastOne(struct Node* node, int iterator){
+  return iterator == getListSize(node);
 }
 
-bool isTheFirst(iterator){
+bool isTheFirst(int iterator){
   return iterator == 0;
 }
 
-void insertAtIndex(int index, char* info){
-  if(index <= getListSize() && index>=0){
+struct Node* insertAtIndex(struct Node* list, int index, char* info){
+  if(index <= getListSize(list) && index>=0){
     int iterator = 0;
-    struct Node* temp =  head;
+    struct Node* temp =  list;
     if(isTheFirst(index)){
-      insertAtHead(info);
-      return;
-    }else if(isTheLastOne(index)){
-      insertAtTail(info);
-      return;
+      return insertAtHead(list, info);
+    }else if(isTheLastOne(list, index)){
+      return insertAtTail(list, info);
     }
     while(notNull(temp)){
       struct Node* newNode = createNode(info);
@@ -158,48 +152,47 @@ void insertAtIndex(int index, char* info){
         newNode->next = temp->next;
         newNode->prev = temp;
         temp->next = newNode;
-        return;
+        return list;
       }
       iterator++;
       temp = temp->next;
     }
   }else{
     printf("Invalid index\n");
+    return list;
   }
 }
 
-void deleteAtIndex(int index){
-  if(index <= getListSize() && index>=0){
+struct Node* deleteAtIndex(struct Node* list, int index){
+  if(index <= getListSize(list) && index>=0){
     int iterator = 0;
-    struct Node* temp =  head;
+    struct Node* temp =  list;
     if(isTheFirst(index)){
-      deleteHead();
-      return;
-    }else if(isTheLastOne(index)){
-      deleteTail();
-      return;
+      return deleteHead(list);
+    }else if(isTheLastOne(list, index)){
+      return deleteTail(list);
     }
     while(notNull(temp)){
       if(iterator == index){
         temp->next->prev = temp->prev;
         temp->prev->next = temp->next;
-        return;
+        return list;
       }
       iterator++;
       temp = temp->next;
     }
   }else{
     printf("Invalid index\n");
+    return list;
   }
 }
 
-
 //return the first node with data equals to info
-struct Node* findNodeWith(char * info){
-  if(isEmpty()){
+struct Node* findNodeWith(struct Node* list, char * info){
+  if(isEmpty(list)){
     return NULL;
   }else{
-    struct Node* temp = head;
+    struct Node* temp = list;
     while(notNull(temp)){
       if(temp->data == info){
         return temp;
@@ -210,13 +203,13 @@ struct Node* findNodeWith(char * info){
   }
 }
 
-struct Node* findAtIndex(int index) {
-  if(index <= getListSize() && index>=0){
-    if(isEmpty()){
+struct Node* findAtIndex(struct Node* list, int index) {
+  if(index <= getListSize(list) && index>=0){
+    if(isEmpty(list)){
       return NULL;
     }else{
       int iterator = 0;
-      struct Node* temp = head;
+      struct Node* temp = list;
       while(notNull(temp)) {
         if (iterator == index) {
           return temp;
@@ -230,8 +223,8 @@ struct Node* findAtIndex(int index) {
   return NULL;
 }
 
-void printList(){
-  if(isEmpty()){
+void printList(struct Node* head){
+  if(isEmpty(head)){
     printf("Empty");
   }
   struct Node* temp = head;
@@ -243,52 +236,50 @@ void printList(){
 }
 
 int main(void){
-  printList();
-  initializeList();
-  insertAtHead("Kim");
-  insertAtHead("Luis");
-  insertAtHead("Lucero");
-  insertAtTail("Tabata");
-  insertAtHead("Susana");
-  
-  printList();
-  printf("Size list %d\n", getListSize());
+  struct Node* list = createNode("Piche");
+  list = insertAtHead(list, "Kim");
+  list = insertAtHead(list, "Luis");
+  list = insertAtHead(list, "Lucero");
+  list = insertAtHead(list, "Susana");
+  list = insertAtTail(list, "Tabata");
+  printList(list);
+  printf("Size list %d\n", getListSize(list));
   
   printf("\nDelete head\n");
-  deleteHead();
-  printList();
+  list = deleteHead(list);
+  printList(list);
   
-  printf("Head %s\n", getValue(getHead()));
-  printf("Tail %s\n", getValue(getTail()));
+  printf("Head %s\n", getValue(getHead(list)));
+  printf("Tail %s\n", getValue(getTail(list)));
 
   printf("\nDelete tail\n");
-  deleteTail();
-  printList();
+  list = deleteTail(list);
+  printList(list);
 
   printf("\nInsert index 3\n");
-  insertAtIndex(3,"Katie");
-  printList();
+  list = insertAtIndex(list, 3,"Katie");
+  printList(list);
 
   printf("\nInsert index 2\n");
-  insertAtIndex(2,"Orlando");
-  printList();
+  list = insertAtIndex(list, 2,"Orlando");
+  printList(list);
 
   printf("\nInsert index 0\n");
-  insertAtIndex(0,"José");
-  printList();
+  list = insertAtIndex(list, 0,"José");
+  printList(list);
 
   printf("\nDelete index 4\n");
-  deleteAtIndex(4);
-  printList();
+  list = deleteAtIndex(list, 4);
+  printList(list);
 
   printf("Buscando Luis..\n");
-  printNode(findNodeWith("Luis"));
+  printNode(findNodeWith(list, "Luis"));
 
   printf("Buscando Juan..\n");
-  printNode(findNodeWith("Juan"));
+  printNode(findNodeWith(list, "Juan"));
 
   printf("Buscando index 3\n");
-  printNode(findAtIndex(3));
+  printNode(findAtIndex(list, 3));
 
 
 }

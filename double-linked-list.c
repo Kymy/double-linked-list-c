@@ -235,6 +235,18 @@ void printList(struct Node* head){
   printf("\n");
 }
 
+bool hasPrev(struct Node* node){
+  return node->prev != NULL;
+}
+
+struct Node* concatenate(struct Node* list1, struct Node* list2){
+  struct Node* lastNode = getTail(list1);
+  printNode(lastNode);
+  lastNode->next = list2;
+  list2->prev = lastNode;
+  return list1;
+}
+
 int main(void){
   struct Node* list = createNode("Piche");
   list = insertAtHead(list, "Kim");
@@ -272,14 +284,24 @@ int main(void){
   list = deleteAtIndex(list, 4);
   printList(list);
 
-  printf("Buscando Luis..\n");
+  printf("Searching Luis..\n");
   printNode(findNodeWith(list, "Luis"));
 
-  printf("Buscando Juan..\n");
+  printf("Searching Juan..\n");
   printNode(findNodeWith(list, "Juan"));
 
-  printf("Buscando index 3\n");
+  printf("Searching index 3\n");
   printNode(findAtIndex(list, 3));
+
+  struct Node* list2 = createNode("JonSnow");
+  list2 = insertAtHead(list2, "Arya");
+  list2 = insertAtHead(list2, "Sansa");
+  list2 = insertAtHead(list2, "Bran");
+  printf("\nLista 2\n");
+  printList(list2);
+  printf("Concatenate 1 and 2\n");
+  list = concatenate(list, list2);
+  printList(list);
 
 
 }

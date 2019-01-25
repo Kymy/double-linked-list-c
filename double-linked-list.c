@@ -1,7 +1,7 @@
 /*
  * Author: Kimberly Becerril Fuentes
  * Implementation of double linked list
- * The elememnts of the list are char type
+ * The elements of list are char type
  */
 
 #include <stdio.h>
@@ -14,28 +14,27 @@ struct Node {
   struct Node* prev;
 };
 
-//Create a new node
-struct Node* createNode(char* info){
-  struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
-  newNode->next = NULL;
-  newNode->prev = NULL;
-  newNode->data = info;
-  return newNode;
+struct Node* create_node(char* info){
+  struct Node* new_node = (struct Node*)malloc(sizeof(struct Node));
+  new_node->next = NULL;
+  new_node->prev = NULL;
+  new_node->data = info;
+  return new_node;
 }
 
-bool isEmpty(struct Node* head){
+bool is_empty(struct Node* head){
   return head == NULL;
 }
 
-bool notNull(struct Node* node){
+bool not_null(struct Node* node){
   return node != NULL;
 }
 
-bool hasNext(struct Node* node){
+bool has_next(struct Node* node){
   return node->next != NULL;
 }
 
-void printNode(struct Node* node){
+void print_node(struct Node* node){
   if(node == NULL) {
     printf("NULL\n");
   } else{
@@ -43,50 +42,50 @@ void printNode(struct Node* node){
   }
 }
 
-struct Node* insertAtHead(struct Node* list, char* info){
-  struct Node* newNode = createNode(info);
-  if(isEmpty(list)){
-    return newNode;
+struct Node* insert_at_head(struct Node* list, char* info){
+  struct Node* new_node = create_node(info);
+  if(is_empty(list)){
+    return new_node;
   }else{
-    newNode->next = list;
-    list->prev = newNode;
+    new_node->next = list;
+    list->prev = new_node;
   }
-  return newNode;
+  return new_node;
 }
 
-struct Node* insertAtTail(struct Node* list, char* info){
-  struct Node* newNode = createNode(info);
-  if(isEmpty(list)){
-    return newNode;
+struct Node* insert_at_tail(struct Node* list, char* info){
+  struct Node* new_node = create_node(info);
+  if(is_empty(list)){
+    return new_node;
   }else{
    struct Node* temp = list;
-   while(hasNext(temp)){
+   while(has_next(temp)){
     temp = temp->next;
    }
-   temp->next = newNode;
-   newNode->prev = temp;
+   temp->next = new_node;
+   new_node->prev = temp;
   }
   return list;
 }
 
-struct Node* getHead(struct Node* head){
+struct Node* get_head(struct Node* head){
   return head;
 }
 
-struct Node* getTail(struct Node* head) {
-  if(isEmpty(head)){
+struct Node* get_tail(struct Node* head) {
+  if(is_empty(head)){
     return NULL;
   }else{
     struct Node* temp = head;
-    while(hasNext(temp)){
+    while(has_next(temp)){
       temp = temp -> next;
     }
     return temp;
   }
 }
 
-struct Node* deleteHead(struct Node* list){
-  if(isEmpty(list)){
+struct Node* delete_head(struct Node* list){
+  if(is_empty(list)){
     return NULL;
   }else{
     list = list->next;
@@ -95,12 +94,12 @@ struct Node* deleteHead(struct Node* list){
   return list;
 }
 
-struct Node* deleteTail(struct Node* list){
-  if(isEmpty(list)){
+struct Node* delete_tail(struct Node* list){
+  if(is_empty(list)){
     return NULL;
   }else{
     struct Node* temp = list;
-    while(hasNext(temp)){
+    while(has_next(temp)){
       temp = temp -> next;
     }
     temp->prev->next = NULL;
@@ -109,13 +108,13 @@ struct Node* deleteTail(struct Node* list){
   }
 }
 
-int getListSize(struct Node* head){
+int get_list_size(struct Node* head){
   int size = 0;
-  if(isEmpty(head)){
+  if(is_empty(head)){
     return size;
   }else{
     struct Node* temp =  head;
-    while(notNull(temp)){
+    while(not_null(temp)){
       size++;
       temp = temp->next;
     }
@@ -123,35 +122,35 @@ int getListSize(struct Node* head){
   return size;
 }
 
-char* getValue(struct Node* node){
+char* get_value(struct Node* node){
   return node->data;
 }
 
-bool isTheLastOne(struct Node* node, int iterator){
-  return iterator == getListSize(node);
+bool is_the_last_one(struct Node* node, int iterator){
+  return iterator == get_list_size(node);
 }
 
-bool isTheFirst(int iterator){
+bool is_the_first(int iterator){
   return iterator == 0;
 }
 
-struct Node* insertAtIndex(struct Node* list, int index, char* info){
-  if(index <= getListSize(list) && index>=0){
+struct Node* insert_at_index(struct Node* list, int index, char* info){
+  if(index <= get_list_size(list) && index>=0){
     int iterator = 0;
     struct Node* temp =  list;
-    if(isTheFirst(index)){
-      return insertAtHead(list, info);
-    }else if(isTheLastOne(list, index)){
-      return insertAtTail(list, info);
+    if(is_the_first(index)){
+      return insert_at_head(list, info);
+    }else if(is_the_last_one(list, index)){
+      return insert_at_tail(list, info);
     }
-    while(notNull(temp)){
-      struct Node* newNode = createNode(info);
+    while(not_null(temp)){
+      struct Node* new_node = create_node(info);
       if(iterator == index){
         temp = temp->prev;
-        temp->next->prev = newNode;
-        newNode->next = temp->next;
-        newNode->prev = temp;
-        temp->next = newNode;
+        temp->next->prev = new_node;
+        new_node->next = temp->next;
+        new_node->prev = temp;
+        temp->next = new_node;
         return list;
       }
       iterator++;
@@ -162,16 +161,16 @@ struct Node* insertAtIndex(struct Node* list, int index, char* info){
   return list;
 }
 
-struct Node* deleteAtIndex(struct Node* list, int index){
-  if(index <= getListSize(list) && index>=0){
+struct Node* delete_at_index(struct Node* list, int index){
+  if(index <= get_list_size(list) && index>=0){
     int iterator = 0;
     struct Node* temp =  list;
-    if(isTheFirst(index)){
-      return deleteHead(list);
-    }else if(isTheLastOne(list, index)){
-      return deleteTail(list);
+    if(is_the_first(index)){
+      return delete_head(list);
+    }else if(is_the_last_one(list, index)){
+      return delete_tail(list);
     }
-    while(notNull(temp)){
+    while(not_null(temp)){
       if(iterator == index){
         temp->next->prev = temp->prev;
         temp->prev->next = temp->next;
@@ -185,13 +184,13 @@ struct Node* deleteAtIndex(struct Node* list, int index){
   return list;
 }
 
-//return the first node with data equals to info
-struct Node* findNodeWith(struct Node* list, char * info){
-  if(isEmpty(list)){
+// return the first node with data equals to info
+struct Node* find_node_with(struct Node* list, char * info){
+  if(is_empty(list)){
     return NULL;
   }else{
     struct Node* temp = list;
-    while(notNull(temp)){
+    while(not_null(temp)){
       if(temp->data == info){
         return temp;
       }
@@ -201,14 +200,14 @@ struct Node* findNodeWith(struct Node* list, char * info){
   }
 }
 
-struct Node* findAtIndex(struct Node* list, int index) {
-  if(index <= getListSize(list) && index>=0){
-    if(isEmpty(list)){
+struct Node* find_at_index(struct Node* list, int index) {
+  if(index <= get_list_size(list) && index>=0){
+    if(is_empty(list)){
       return NULL;
     }else{
       int iterator = 0;
       struct Node* temp = list;
-      while(notNull(temp)) {
+      while(not_null(temp)) {
         if (iterator == index) {
           return temp;
         }else{
@@ -221,13 +220,13 @@ struct Node* findAtIndex(struct Node* list, int index) {
   return NULL;
 }
 
-void printList(struct Node* head){
-  if(isEmpty(head)){
+void print_list(struct Node* head){
+  if(is_empty(head)){
     printf("Empty");
   }
   struct Node* temp = head;
-  while(notNull(temp)){
-    printNode(temp);
+  while(not_null(temp)){
+    print_node(temp);
     temp = temp->next;
   }
   printf("\n");
@@ -238,68 +237,68 @@ bool hasPrev(struct Node* node){
 }
 
 struct Node* concatenate(struct Node* list1, struct Node* list2){
-  struct Node* lastNode = getTail(list1);
-  printNode(lastNode);
-  lastNode->next = list2;
-  list2->prev = lastNode;
+  struct Node* last_node = get_tail(list1);
+  print_node(last_node);
+  last_node->next = list2;
+  list2->prev = last_node;
   return list1;
 }
 
 int main(void){
-  struct Node* list = createNode("Piche");
-  list = insertAtHead(list, "Kim");
-  list = insertAtHead(list, "Luis");
-  list = insertAtHead(list, "Lucero");
-  list = insertAtHead(list, "Susana");
-  list = insertAtTail(list, "Tabata");
-  printList(list);
-  printf("Size list %d\n", getListSize(list));
+  struct Node* list = create_node("Piche");
+  list = insert_at_head(list, "Kim");
+  list = insert_at_head(list, "Luis");
+  list = insert_at_head(list, "Lucero");
+  list = insert_at_head(list, "Susana");
+  list = insert_at_tail(list, "Tabata");
+  print_list(list);
+  printf("Size list %d\n", get_list_size(list));
   
   printf("\nDelete head\n");
-  list = deleteHead(list);
-  printList(list);
+  list = delete_head(list);
+  print_list(list);
   
-  printf("Head %s\n", getValue(getHead(list)));
-  printf("Tail %s\n", getValue(getTail(list)));
+  printf("Head %s\n", get_value(get_head(list)));
+  printf("Tail %s\n", get_value(get_tail(list)));
 
   printf("\nDelete tail\n");
-  list = deleteTail(list);
-  printList(list);
+  list = delete_tail(list);
+  print_list(list);
 
   printf("\nInsert index 3\n");
-  list = insertAtIndex(list, 3,"Katie");
-  printList(list);
+  list = insert_at_index(list, 3,"Katie");
+  print_list(list);
 
   printf("\nInsert index 2\n");
-  list = insertAtIndex(list, 2,"Orlando");
-  printList(list);
+  list = insert_at_index(list, 2,"Orlando");
+  print_list(list);
 
   printf("\nInsert index 0\n");
-  list = insertAtIndex(list, 0,"José");
-  printList(list);
+  list = insert_at_index(list, 0,"José");
+  print_list(list);
 
   printf("\nDelete index 4\n");
-  list = deleteAtIndex(list, 4);
-  printList(list);
+  list = delete_at_index(list, 4);
+  print_list(list);
 
   printf("Searching Luis..\n");
-  printNode(findNodeWith(list, "Luis"));
+  print_node(find_node_with(list, "Luis"));
 
   printf("Searching Juan..\n");
-  printNode(findNodeWith(list, "Juan"));
+  print_node(find_node_with(list, "Juan"));
 
   printf("Searching index 3\n");
-  printNode(findAtIndex(list, 3));
+  print_node(find_at_index(list, 3));
 
-  struct Node* list2 = createNode("JonSnow");
-  list2 = insertAtHead(list2, "Arya");
-  list2 = insertAtHead(list2, "Sansa");
-  list2 = insertAtHead(list2, "Bran");
+  struct Node* list2 = create_node("JonSnow");
+  list2 = insert_at_head(list2, "Arya");
+  list2 = insert_at_head(list2, "Sansa");
+  list2 = insert_at_head(list2, "Bran");
   printf("\nLista 2\n");
-  printList(list2);
+  print_list(list2);
   printf("Concatenate 1 and 2\n");
   list = concatenate(list, list2);
-  printList(list);
+  print_list(list);
 
 
 }

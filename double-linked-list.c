@@ -157,10 +157,9 @@ struct Node* insertAtIndex(struct Node* list, int index, char* info){
       iterator++;
       temp = temp->next;
     }
-  }else{
-    printf("Invalid index\n");
-    return list;
   }
+  printf("Invalid index\n");
+  return list;
 }
 
 struct Node* deleteAtIndex(struct Node* list, int index){
@@ -181,10 +180,9 @@ struct Node* deleteAtIndex(struct Node* list, int index){
       iterator++;
       temp = temp->next;
     }
-  }else{
-    printf("Invalid index\n");
-    return list;
   }
+  printf("Invalid index\n");
+  return list;
 }
 
 //return the first node with data equals to info

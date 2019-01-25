@@ -1,7 +1,7 @@
 # Double linked list
 
 A linked list is a linear data structure.
-This implementation is written in C and the elements in list are of type char *.
+This implementation is written in C and the elements in list are of type _char *_.
 
 ## 
 

@@ -1,7 +1,7 @@
 /*
  * Author: Kimberly Becerril Fuentes
  * Implementation of double linked list
- * The elements of list are char type
+ * The elements of list are char* type
  */
 
 #include <stdio.h>

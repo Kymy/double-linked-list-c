@@ -31,6 +31,7 @@ main(int argc, char* argv[]) {
         list = prepend(list, "Lucero");
         list = prepend(list, "Susana");
         list = append(list, "Tabata");
+        list = append(list, 'a');
         print_list(list);
         printf("Size list %d\n", get_list_size(list));
   
